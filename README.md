@@ -43,8 +43,8 @@ assemblyai.stopRecording(callback)
 ```
 Stop audio stream being recorded. Recorded audio is processed and sent to the AssemblyAI API for transcription.
 
-- **callback**: function to handle result of transcription operation
-The AssemblyAI API returns the following object upon completion. Details can be found at [AssemblyAI Documentation](https://docs.assemblyai.com/stream/).
+- **callback**: Function to handle result of transcription operation.
+The AssemblyAI API returns the following response object upon completion. Details can be found at [AssemblyAI Documentation](https://docs.assemblyai.com/stream/).
 ```
 Example response:
 {
@@ -57,7 +57,11 @@ Example response:
 }
 ```
 
+## Sample project
+
+Complete sample project [AssemblyAI Wrapper Sample Project](https://github.com/AssemblyAI/assemblyai-webrtc-sample-project)
+
+
 
 ### Note
-
 The wrapper utilizes WebRTC to capture audio from the browser. WebRTC requires web projects to be hosted on localhost or an SSL secured domain.
