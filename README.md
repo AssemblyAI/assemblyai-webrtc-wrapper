@@ -1,6 +1,6 @@
 # AssemblyAI WebRTC Wrapper
 
-The AssemblyAI wrapper provides an easy to use interface to stream audio from the browser to the AssemblyAI API for near real-time transcription.
+The AssemblyAI wrapper provides an easy to use interface to stream audio from the browser to the AssemblyAI API for near real-time speech-to-text. For a complete sample project, check out the [AssemblyAI Sample WebRTC Project](https://github.com/AssemblyAI/assemblyai-webrtc-sample-project).
 
 ## Getting started
 
@@ -41,12 +41,22 @@ Cancel audio stream being recorded.
 ```
 assemblyai.stopRecording(callback)
 ```
-Stop audio stream being recorded. Recorded audio is processed and sent to the AssemblyAI API for transcription.
+Stop audio stream being recorded. Recorded audio is sent to the AssemblyAI API for transcription.
 
-- **callback**: Function to handle result of transcription operation.
-The AssemblyAI API returns the following response object upon completion. Details can be found at [AssemblyAI Documentation](https://docs.assemblyai.com/stream/).
+- **callback**: Function to handle result of transcription operation. For example:
+
+    ```
+    assemblyai.stopRecording(function(response){
+        console.log(response.text);
+        console.log(response.confidence);
+        console.log(response.id)
+    });
+
+
+The `response` argument passed to your callback function will be the following response object returned from the AssemblyAI API:
+
 ```
-Example response:
+Example response object:
 {
   status: 'completed',
   model_id: 'None',
@@ -56,11 +66,11 @@ Example response:
   id: 5
 }
 ```
+More details can be found in the full [AssemblyAI Documentation](https://docs.assemblyai.com/stream/).
 
 ## Sample project
 
-Complete sample project [AssemblyAI Wrapper Sample Project](https://github.com/AssemblyAI/assemblyai-webrtc-sample-project)
-
+For a complete sample project, check out the [AssemblyAI Sample WebRTC Project](https://github.com/AssemblyAI/assemblyai-webrtc-sample-project).
 
 
 ### Note
