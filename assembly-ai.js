@@ -4,6 +4,20 @@ const API_ENDPOINT = "https://api.assemblyai.com/stream";
 const BUFFER_SIZE = [256, 512, 1024, 2048, 4096, 8192, 16384];
 const PCM_DATA_SAMPLE_RATE = 8000;
 
+// Get wrapper script path
+var scriptPath = '';
+if (document.currentScript) {
+  var hostname = window.location.hostname;
+  var filename = document.currentScript.src.substr(document.currentScript.src.lastIndexOf('/') + 1);
+  var segments = document.currentScript.src.replace('https://','').replace('http://','').split('/');
+  for (var i = 0; i < segments.length; i++) {
+    if (segments[i].includes(hostname) || segments[i].includes(filename)) {
+      continue;
+    }
+    scriptPath += segments[i] + '/';
+  }
+}
+
 // Audio context + .createScriptProcessor shim
 var audioContext = new AudioContext;
 if (audioContext.createScriptProcessor == null) {
@@ -42,7 +56,7 @@ class AssemblyAI {
   constructor(token) {
     var self = this;
     this.token = token;
-    this.worker = new Worker('js/lib/EncoderWorker.js');
+    this.worker = new Worker(scriptPath+'lib/EncoderWorker.js');
     this.worker.onmessage = function(event) { self._processRecording(event.data.blob); };
     this.callback = undefined;
   }
