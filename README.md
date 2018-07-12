@@ -51,21 +51,21 @@ Stop audio stream being recorded. Recorded audio is sent to the AssemblyAI API f
         console.log(response.confidence);
         console.log(response.id)
     });
+    ```
 
+- The `response` argument passed to your callback function will be the following response object returned from the AssemblyAI API:
 
-The `response` argument passed to your callback function will be the following response object returned from the AssemblyAI API:
-
-```
-Example response object:
-{
-  status: 'completed',
-  model_id: 'None',
-  confidence: '0.9',
-  created: '2018-06-25 05:14:28.361123',
-  text: 'the weather is nice today',
-  id: 5
-}
-```
+    ```
+    Example response object:
+    {
+      status: 'completed',
+      model_id: 'None',
+      confidence: '0.9',
+      created: '2018-06-25 05:14:28.361123',
+      text: 'the weather is nice today',
+      id: 5
+    }
+    ```
 More details can be found in the full [AssemblyAI Documentation](https://docs.assemblyai.com/stream/).
 
 ## Sample project
