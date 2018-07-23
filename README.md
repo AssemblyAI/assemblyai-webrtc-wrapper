@@ -68,6 +68,13 @@ Stop audio stream being recorded. Recorded audio is sent to the AssemblyAI API f
     ```
 More details can be found in the full [AssemblyAI Documentation](https://docs.assemblyai.com/stream/).
 
+**Save recording**
+
+```
+assemblyai.saveRecording()
+```
+Save the recorded audio stream to disk in audio/wav format.
+
 ## Sample project
 
 For a complete sample project, check out the [AssemblyAI Sample WebRTC Project](https://github.com/AssemblyAI/assemblyai-webrtc-sample-project).
