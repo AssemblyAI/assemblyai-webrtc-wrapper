@@ -56,6 +56,7 @@ class AssemblyAI {
   constructor(token) {
     var self = this;
     this.token = token;
+    this.base64 = undefined;
     this.worker = new Worker(scriptPath+'lib/EncoderWorker.js');
     this.worker.onmessage = function(event) { self._processRecording(event.data.blob); };
     this.callback = undefined;
@@ -76,6 +77,18 @@ class AssemblyAI {
 
   cancelRecording() {
     this._stopRecordingProcess();
+  }
+
+  saveRecording() {
+    if (this.base64 && this.base64 != undefined) {
+      var blob = this._base64toBlob(this.base64, 'audio/wav');
+      var date = new Date();
+      var fileName = "recording-"+(date.getMonth()+1)+"."+date.getDate()+"."+date.getFullYear()+"-"+date.getHours()+"."+date.getMinutes()+"."+date.getSeconds()+".wav";
+      var a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = fileName;
+      a.click();
+    }
   }
 
   _getBuffers(event) {
@@ -124,8 +137,8 @@ class AssemblyAI {
         offlineSource.start();
         offlineAudioContext.startRendering().then(function(renderedBuffer) {
           var wav = self._createWaveFileData(renderedBuffer);
-          var base64 = btoa(self._uint8ToString(wav));
-          self._transcribe(base64);
+          self.base64 = btoa(self._uint8ToString(wav));
+          self._transcribe(self.base64);
         }).catch(function(err) {
           console.log('Rendering failed: ' + err);
           // Note: The promise should reject when startRendering is called a second time on an OfflineAudioContext
@@ -247,6 +260,27 @@ class AssemblyAI {
     this._writeAudioBuffer(audioBuffer, waveFileData, 44);
 
     return waveFileData;
+  }
+
+  _base64toBlob(base64Data, contentType) {
+    contentType = contentType || '';
+    var sliceSize = 1024;
+    var byteCharacters = atob(base64Data);
+    var bytesLength = byteCharacters.length;
+    var slicesCount = Math.ceil(bytesLength / sliceSize);
+    var byteArrays = new Array(slicesCount);
+
+    for (var sliceIndex = 0; sliceIndex < slicesCount; ++sliceIndex) {
+        var begin = sliceIndex * sliceSize;
+        var end = Math.min(begin + sliceSize, bytesLength);
+
+        var bytes = new Array(end - begin);
+        for (var offset = begin, i = 0; offset < end; ++i, ++offset) {
+            bytes[i] = byteCharacters[offset].charCodeAt(0);
+        }
+        byteArrays[sliceIndex] = new Uint8Array(bytes);
+    }
+    return new Blob(byteArrays, { type: contentType });
   }
 }
 
