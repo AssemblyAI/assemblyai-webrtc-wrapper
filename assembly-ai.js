@@ -25,7 +25,6 @@ if (audioContext.createScriptProcessor == null) {
 }
 
 var microphone = undefined; // on stream initialization
-var input = audioContext.createGain();
 var processor = audioContext.createScriptProcessor(undefined, 2, 2);
 
 // Navigator.getUserMedia shim
@@ -46,7 +45,7 @@ var constraints = {
 navigator.getUserMedia(constraints,
   function(stream) {
     microphone = audioContext.createMediaStreamSource(stream);
-    microphone.connect(input);
+    microphone.connect(processor);
   },
   function(error) {
     window.alert("Could not get audio input");
@@ -102,7 +101,7 @@ class AssemblyAI {
     var self = this;
     var bufferSize = BUFFER_SIZE[BUFFER_SIZE.indexOf(processor.bufferSize)];
     processor = audioContext.createScriptProcessor(bufferSize, 2, 2);
-    input.connect(processor);
+    microphone.connect(processor);
     processor.connect(audioContext.destination);
     this.worker.postMessage({
      command: 'start',
@@ -116,7 +115,6 @@ class AssemblyAI {
   }
 
   _stopRecordingProcess(finish) {
-    input.disconnect();
     processor.disconnect();
     this.worker.postMessage({ command: finish ? 'finish' : 'cancel' });
   }
