@@ -23,10 +23,38 @@ Create an AssemblyAI instance with your API token.
 **Start recording**
 
 ```
-assemblyai.startRecording()
+assemblyai.startRecording([autoStop, transcriptionCallback, uiCallback])
 ```
 Begin recording audio stream from browser.
 
+Optional parameters:
+
+- **autoStop**: _true_ | _false_
+  Auto-detect when user is done speaking and stops recording.
+  Requires _transcriptionCallback_ parameter if _true_.
+
+- **transcriptionCallback**: Function to handle result of transcription operation. For example:
+
+    ```
+    assemblyai.startRecording(true, function(response){
+        console.log(response.text);
+        console.log(response.confidence);
+        console.log(response.id)
+    });
+    ```
+    Required if _autoStop_ is _true_.
+
+- **uiCallback**: Function to handle any UI operations immediately after recording stops:
+
+    ```
+    assemblyai.startRecording(true, transcriptionCallback, function(){
+        /* Code to update UI immediately after recording stops */
+
+        // Change text of record button back from "Recording" to "Record"
+        var button = document.getElementById("record-button");
+        button.innerText("Record");
+    });
+    ```
 
 **Cancel recording**
 
