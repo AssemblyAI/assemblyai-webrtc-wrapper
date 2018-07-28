@@ -141,6 +141,7 @@ class AssemblyAI {
   }
 
   _stopRecordingProcess(finish) {
+    microphone.disconnect();
     processor.disconnect();
     this.worker.postMessage({ command: finish ? 'finish' : 'cancel' });
   }
